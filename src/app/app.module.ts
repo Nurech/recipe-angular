@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http'
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -14,10 +14,15 @@ import {ShoppingEditComponent} from './shopping-list/shopping-edit/shopping-edit
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {DropdownDirective} from "./shared/dropdown.directive";
 import {ShoppingListService} from "./shopping-list/shopping-list.service";
-import { RecipeStartComponent } from './recipes/recipe-start/recipe-start.component';
-import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import {RecipeStartComponent} from './recipes/recipe-start/recipe-start.component';
+import {RecipeEditComponent} from './recipes/recipe-edit/recipe-edit.component';
 import {RecipeService} from "./recipes/recipe.service";
-import { AuthComponent } from './auth/auth.component';
+import {AuthComponent} from './auth/auth.component';
+import {ProgressBarComponent} from './shared/progress-bar/progress-bar.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {AuthInterceptorService} from "./auth/auth-interceptor.service";
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
@@ -32,16 +37,28 @@ import { AuthComponent } from './auth/auth.component';
     DropdownDirective,
     RecipeStartComponent,
     RecipeEditComponent,
-    AuthComponent
+    AuthComponent,
+    ProgressBarComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    AppRoutingModule
-      ],
-  providers: [ShoppingListService, RecipeService],
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatProgressBarModule
+  ],
+  providers: [
+    ShoppingListService,
+    RecipeService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
