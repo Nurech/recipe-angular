@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http'
+import {StoreModule} from '@ngrx/store'
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -22,7 +23,8 @@ import {ProgressBarComponent} from './shared/progress-bar/progress-bar.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {AuthInterceptorService} from "./auth/auth-interceptor.service";
-import { AlertComponent } from './shared/alert/alert.component';
+import {AlertComponent} from './shared/alert/alert.component';
+import {shoppingListReducer} from "./shopping-list/store/shopping-list.reducer";
 
 @NgModule({
   declarations: [
@@ -48,7 +50,8 @@ import { AlertComponent } from './shared/alert/alert.component';
     HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    StoreModule.forRoot({shoppingList: shoppingListReducer})
   ],
   providers: [
     ShoppingListService,
